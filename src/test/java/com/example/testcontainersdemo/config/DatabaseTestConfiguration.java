@@ -9,7 +9,7 @@ import org.testcontainers.utility.DockerImageName;
 public class DatabaseTestConfiguration {
     @Bean
     public PostgreSQLContainer<?> postgreSQLContainer() {
-        PostgreSQLContainer<?> container = new PostgreSQLContainer<>(DockerImageName.parse("postgres:9.6.12"))
+        PostgreSQLContainer<?> container = new PostgreSQLContainer<>(DockerImageName.parse("postgres:15"))
                 .withDatabaseName("testdb")
                 .withUsername("test")
                 .withPassword("test");

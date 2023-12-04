@@ -30,7 +30,7 @@ public class UserControllerTest {
     private DataSource dataSource;
 
     @Container
-    public static PostgreSQLContainer<?> container = new PostgreSQLContainer<>(DockerImageName.parse("postgres:9.6.12"))
+    public static PostgreSQLContainer<?> container = new PostgreSQLContainer<>(DockerImageName.parse("postgres:15"))
             .withDatabaseName("testdb")
             .withUsername("test")
             .withPassword("test")
