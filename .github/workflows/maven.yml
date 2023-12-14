@@ -28,13 +28,13 @@ jobs:
           distribution: 'temurin'
           cache: maven
       - name: Build with Maven
-        run: |
-          echo "user variable : $POSTGRES_USER"
-          echo "host variable : $POSTGRES_HOST"
-          echo "port variable : $POSTGRES_PORT"
-          mvn clean install
         env:
           POSTGRES_USER: ${{ vars.POSTGRES_USR }}
           POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
           POSTGRES_HOST: ${{ vars.POSTGRES_HOST }}
           POSTGRES_PORT: ${{ vars.POSTGRES_PORT }}
+        run: |
+          echo "user variable : $POSTGRES_USER"
+          echo "host variable : $POSTGRES_HOST"
+          echo "port variable : $POSTGRES_PORT"
+          mvn clean install
