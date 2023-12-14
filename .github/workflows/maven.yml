@@ -44,19 +44,6 @@ jobs:
           distribution: 'temurin'
           cache: maven
 
-        # Use preinstalled PostgreSQL
-#      - name: Start PostgreSQL on Ubuntu
-#        run: |
-#          sudo systemctl start postgresql.service
-#          pg_isready
-
-        # Change database name to meet your requirements
-#      - name: Create additional database
-#        run: |
-#          sudo -u ${{ vars.POSTGRES_USR }} createdb --owner=${{ vars.POSTGRES_USR }} ${{ vars.POSTGRES_DB }}
-#          PGPASSWORD=${{ secrets.POSTGRES_PASSWORD }} psql --username=${{ vars.POSTGRES_USR }} --host=${{ vars.POSTGRES_HOST }} --list timetable
-#          PGPASSWORD=${{ secrets.POSTGRES_PASSWORD }} psql --username=${{ vars.POSTGRES_USR }} --host=${{ vars.POSTGRES_HOST }} --dbname=${{ vars.POSTGRES_DB }} --command="CREATE SCHEMA demo;"
-
       - name: Build with Maven
         env:
           POSTGRES_USER: ${{ vars.POSTGRES_USR }}
@@ -65,3 +52,20 @@ jobs:
           POSTGRES_PORT: ${{ vars.POSTGRES_PORT }}
           POSTGRES_DB: ${{ vars.POSTGRES_DB }}
         run: mvn clean install
+
+      - name: Login to Docker Hub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Build and push
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          file: ./Dockerfile
+          push: true
+          tags: ${{ secrets.DOCKERHUB_USERNAME }}/${{ vars.POSTGRES_DB }}:latest
