@@ -29,15 +29,15 @@ jobs:
           cache: maven
       - name: Build with Maven
         run: |
-          export POSTGRES_USER=${{ env.POSTGRES_USR }}
+          export POSTGRES_USER=${{ vars.POSTGRES_USR }}
           export POSTGRES_PASSWORD=${{ secrets.POSTGRES_PASSWORD }}
-          export POSTGRES_HOST=${{ env.POSTGRES_HOST }}
-          export POSTGRES_PORT=${{ env.POSTGRES_PORT }}
+          export POSTGRES_HOST=${{ vars.POSTGRES_HOST }}
+          export POSTGRES_PORT=${{ vars.POSTGRES_PORT }}
           echo "user variable : $POSTGRES_USR"
           echo "host variable : $POSTGRES_HOST"
           echo "port variable : $POSTGRES_PORT"
           mvn clean install
         env:
-          POSTGRES_USR: ${{ env.POSTGRES_USR }}
-          POSTGRES_HOST: ${{ env.POSTGRES_HOST }}
-          POSTGRES_PORT: ${{ env.POSTGRES_PORT }}
+          POSTGRES_USR: ${{ vars.POSTGRES_USR }}
+          POSTGRES_HOST: ${{ vars.POSTGRES_HOST }}
+          POSTGRES_PORT: ${{ vars.POSTGRES_PORT }}
