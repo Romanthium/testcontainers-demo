@@ -19,6 +19,22 @@ jobs:
 
     runs-on: ubuntu-latest
 
+    services:
+      postgres:
+        image: postgres
+        env:
+          POSTGRES_USER: ${{ vars.POSTGRES_USR }}
+          POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
+          POSTGRES_HOST: ${{ vars.POSTGRES_HOST }}
+          POSTGRES_DB: ${{ vars.POSTGRES_DB }}
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+        ports:
+          - 5432:5432
+
     steps:
       - uses: actions/checkout@v3
       - name: Set up JDK 17
@@ -29,17 +45,17 @@ jobs:
           cache: maven
 
         # Use preinstalled PostgreSQL
-      - name: Start PostgreSQL on Ubuntu
-        run: |
-          sudo systemctl start postgresql.service
-          pg_isready
+#      - name: Start PostgreSQL on Ubuntu
+#        run: |
+#          sudo systemctl start postgresql.service
+#          pg_isready
 
         # Change database name to meet your requirements
-      - name: Create additional database
-        run: |
-          sudo -u ${{ vars.POSTGRES_USR }} createdb --owner=${{ vars.POSTGRES_USR }} ${{ vars.POSTGRES_DB }}
-          PGPASSWORD=${{ secrets.POSTGRES_PASSWORD }} psql --username=${{ vars.POSTGRES_USR }} --host=${{ vars.POSTGRES_HOST }} --list timetable
-          PGPASSWORD=${{ secrets.POSTGRES_PASSWORD }} psql --username=${{ vars.POSTGRES_USR }} --host=${{ vars.POSTGRES_HOST }} --dbname=${{ vars.POSTGRES_DB }} --command="CREATE SCHEMA demo;"
+#      - name: Create additional database
+#        run: |
+#          sudo -u ${{ vars.POSTGRES_USR }} createdb --owner=${{ vars.POSTGRES_USR }} ${{ vars.POSTGRES_DB }}
+#          PGPASSWORD=${{ secrets.POSTGRES_PASSWORD }} psql --username=${{ vars.POSTGRES_USR }} --host=${{ vars.POSTGRES_HOST }} --list timetable
+#          PGPASSWORD=${{ secrets.POSTGRES_PASSWORD }} psql --username=${{ vars.POSTGRES_USR }} --host=${{ vars.POSTGRES_HOST }} --dbname=${{ vars.POSTGRES_DB }} --command="CREATE SCHEMA demo;"
 
       - name: Build with Maven
         env:
