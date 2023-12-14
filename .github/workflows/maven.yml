@@ -29,9 +29,9 @@ jobs:
           cache: maven
       - name: Build with Maven
         run: |
-          export POSTGRES_USER=${{POSTGRES_ENV.POSTGRES_USR}}
-          export POSTGRES_PASSWORD=${{POSTGRES_ENV.POSTGRES_PASSWORD}}
-          export POSTGRES_HOST=${{POSTGRES_ENV.POSTGRES_HOST}}
-          export POSTGRES_PORT=${{POSTGRES_ENV.POSTGRES_PORT}}
+          export POSTGRES_USER=${{ vars.POSTGRES_USR }}
+          export POSTGRES_PASSWORD=${{ secrets.POSTGRES_PASSWORD }}
+          export POSTGRES_HOST=${{ vars.POSTGRES_HOST }}
+          export POSTGRES_PORT=${{ vars.POSTGRES_PORT }}
           mvn clean install
 
