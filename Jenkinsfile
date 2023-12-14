@@ -10,7 +10,7 @@ pipeline {
         stage('Build Maven'){
             steps{
                 checkout scmGit(branches: [[name: '*/main']], extensions: [], userRemoteConfigs: [[url: 'https://github.com/Romanthium/testcontainers-demo']])
-                withEnv(["POSTGRES_USER=$POSTGRES_CREDS_USR", "POSTGRES_PASSWORD=$POSTGRES_CREDS_PSW", 'POSTGRES_HOST=localhost', 'POSTGRES_PORT=5432']) {
+                withEnv(["POSTGRES_USER=$POSTGRES_CREDS_USR", "POSTGRES_PASSWORD=$POSTGRES_CREDS_PSW", 'POSTGRES_HOST=localhost', 'POSTGRES_PORT=5432', 'POSTGRES_DB=testcontainers-demo']) {
                     sh 'mvn clean install'
                 }
             }
